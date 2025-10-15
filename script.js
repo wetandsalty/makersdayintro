@@ -37,15 +37,15 @@ let phaseSeconds      = 2.0;   // duration of each grow/shrink phase
 let maxShare          = 0.40;  // width share of the active triangle (0..1)
 
 let blueAppearProb    = 0.25;  // per-phase chance each OFF blue turns ON
-let blueDisappearProb = 0.25;  // per-phase chance each ON  blue turns OFF
+let blueDisappearProb = 0.35;  // per-phase chance each ON  blue turns OFF
 
 // ---- session timing (NEW) ----
-const resetAfterSeconds = 60;  // after this many seconds, go back to reds-only
+// const resetAfterSeconds = 60;  // after this many seconds, go back to reds-only
 let sessionStart = 0;
-let didReset = false;
+let didReset = true;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight/3*2);
   noStroke();
 
   // random starting distribution over present slots (reds only at start)
@@ -178,7 +178,7 @@ function isBlue(i){ return IS_BLUE[i]; }
 function* blueIndices(){ for (let i = 0; i < SLOT_COUNT; i++) if (IS_BLUE[i]) yield i; }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight/3*2);
 }
 
 // ---------------- EASING CURVES ----------------
