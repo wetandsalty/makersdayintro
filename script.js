@@ -1,25 +1,24 @@
 // --- sketch.js --------------------------------------------------------------
-
-/*
- Layout: 9 slots across the row
-
- i:    0   1   2   3   4   5   6   7   8
- dir:  <   <   <   <   >   <   <   >   >
- col:  R   B   B   B   R   R   B   R   B
-
- Reds (0,4,5,7) always exist.
- Blues (1,2,3,6,8) can appear/disappear independently.
-*/
+//
+// Layout: 9 slots across the row
+//
+// i:    0   1   2   3   4   5   6   7   8
+// dir:  <   <   <   <   >   <   >   >   >
+// col:  R   B   B   B   R   R   B   B   R
+//
+// Reds (0,4,5,7) always exist.
+// Blues (1,2,3,6,8) can appear/disappear independently.
+// ----------------------------------------------------------------------------
 
 const SLOT_COUNT = 9;
 
-// Colors (updated)
+// Colors
 const RED  = '#143E4C'; // formerly "red" triangles
 const BLUE = '#FB263B'; // formerly "blue" triangles
 const BG   = '#275869';
 
 // Per-slot direction: true = left "<", false = right ">"
-const DIR_LEFT = [true, true, true, true, false, true, true, false, false];
+const DIR_LEFT = [true, true, true, true, false, true, false, false, false];
 
 // Per-slot color: true = blue, false = red
 const IS_BLUE = [false, true, true, true, false, false, true, false, true];
@@ -38,7 +37,12 @@ let phaseSeconds      = 2.0;   // duration of each grow/shrink phase
 let maxShare          = 0.40;  // width share of the active triangle (0..1)
 
 let blueAppearProb    = 0.25;  // per-phase chance each OFF blue turns ON
-let blueDisappearProb = 0.18;  // per-phase chance each ON  blue turns OFF
+let blueDisappearProb = 0.25;  // per-phase chance each ON  blue turns OFF
+
+// ---- session timing (NEW) ----
+const resetAfterSeconds = 60;  // after this many seconds, go back to reds-only
+let sessionStart = 0;
+let didReset = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -48,6 +52,9 @@ function setup() {
   randomizeShares(sharesPrev, present);
   sharesNext = makeTarget(active, present);
   phaseStart = millis();
+
+  // start session timer
+  sessionStart = millis();
 }
 
 function draw() {
@@ -79,11 +86,32 @@ function draw() {
     }
   }
 
+  // --- timed reset to initial state (reds only), smooth mid-phase ---
+  if (!didReset && (millis() - sessionStart) >= resetAfterSeconds * 1000) {
+    // freeze current visual state as the new "from" state for a smooth transition
+    sharesPrev = s.slice();
+
+    // force reds-only presence
+    present = IS_BLUE.map(isB => !isB ? true : false);
+
+    // keep it in the initial state afterwards (no new blues)
+    blueAppearProb = 0;
+    blueDisappearProb = 1;
+
+    // ensure active is present (in case a blue was active)
+    if (!present[active]) active = nextActive(active, present);
+
+    // steer to the reds-only distribution
+    sharesNext = makeTarget(active, present);
+    phaseStart = millis();
+    didReset = true;
+  }
+
   // end of phase → update state
   if (u >= 1) {
     sharesPrev = sharesNext.slice();
 
-    // stochastic blue toggles (independent; may cluster or separate randomly)
+    // stochastic blue toggles (disabled once didReset is true due to probs above)
     for (const j of blueIndices()) {
       if (!present[j] && random() < blueAppearProb) present[j] = true;
       else if (present[j] && random() < blueDisappearProb) present[j] = false;
