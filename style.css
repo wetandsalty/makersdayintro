@@ -1,0 +1,66 @@
+/* public/style.css */
+
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #333333;
+  --foreground: #FFFFFF;
+  --accent: blue;
+
+  --grey-10: #efefef;
+  --grey-20: #efefef;
+  --grey-40: #efefef;
+  --grey-60: #313131;
+}
+
+/* _______________________________________________*/
+
+/* universal box-sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* _______________________________________________*/
+
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+}
+
+body {
+  font-family: "Real Text Pro", Helvetica, Arial, sans-serif;
+  color: var(--foreground);
+  font-weight: 400;
+  font-size: 2vw;
+  line-height: 1.25rem;
+  overflow: hidden;
+  margin: 0;
+  background-size: 100%;
+  background-position: 0 0;
+}
+
+section {
+  width: 100%;
+  /* height: calc(56vw); */
+  padding: 0 3.5em;
+}
+
+h1 {
+  font-size: 5em;
+  line-height: 100%;
+  font-weight: 500;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
+
+
+
+
