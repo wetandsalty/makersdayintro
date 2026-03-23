@@ -1,29 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ESPI x AI</title>
-
-  <!-- loading normalize, fonts and stylesheet -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
-  <link rel="stylesheet" href="style.css">
-
-  <link rel="icon" href="favicon.png" sizes="96x96" />
-
-  <!-- Link to p5.js library (from CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/p5.min.js"></script>
-
+  <title>Tools menu</title>
+  <style>
+    *{
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 40px;
+      background: #fafafa;
+    }
+    .container{
+      width: 100%;
+      display: flex;
+      margin: 4em 0;
+      column-gap: 2em;
+    }
+    .item {
+      display: flex;
+      flex: 0 1 33%;
+      height: 200px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .linkblock{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #000000;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.5em;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <section>
-    <h1>
-      Makers’ Day </br>
-      ESPI×AI
-    </h1>
-  </section>
+  <h1>Sketches</h1>
+  <p>This is just an overview to click through to the individual sketches.</p>
 
-  <!-- Load the front-end script -->
-  <script src="script.js"></script>
+  <div class="container">
+      <div class="item">
+        <a class="linkblock" href="./1/index.html">
+          Makers' Day 2025
+        </a>
+      </div>
+      <div class="item">
+        <a class="linkblock" href="./2/index.html">
+          NOW. NEW. NEXT.
+        </a>
+      </div>
+  </div>
 </body>
 </html>
